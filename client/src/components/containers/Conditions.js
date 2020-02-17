@@ -1,44 +1,48 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { fetchConditions } from '../../actions/conditions';
 
-class Conditions extends Component {
-  componentDidMount() {
-    const { getConditions } = this.props;
+import ConditionsList from '../presentational/ConditionsList';
+import Loader from '../presentational/Loader';
 
-    getConditions();
+const useStyles = makeStyles(() => ({
+  loaderContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '20em'
   }
+}));
 
-  render() {
-    const { conditions, isLoading } = this.props;
+const Conditions = () => {
+  const conditions = useSelector(
+    ({ conditionsReducer }) => conditionsReducer.conditions
+  );
 
-    if (isLoading) {
-      return <div>Loading</div>;
-    }
+  const isLoading = useSelector(
+    ({ conditionsReducer }) => conditionsReducer.isLoading
+  );
 
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchConditions());
+  }, [dispatch]);
+
+  if (isLoading) {
     return (
-      <ul>
-        {conditions.map(condition => (
-          <li>{condition.label}</li>
-        ))}
-      </ul>
+      <Container maxWidth="md" className={classes.loaderContainer}>
+        <Loader />
+      </Container>
     );
   }
-}
 
-Conditions.propTypes = {
-  PropTypes
+  return <ConditionsList conditions={conditions} />;
 };
 
-const mapStateToProps = ({ conditionsReducer }) => ({
-  conditions: conditionsReducer.conditions,
-  isLoading: conditionsReducer.isLoading
-});
-
-const mapDispatchToProps = {
-  getConditions: fetchConditions
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Conditions);
+export default Conditions;

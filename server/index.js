@@ -1,9 +1,15 @@
 const express = require('express');
 
-const conditions = require('./data/conditions.json');
+const getConditions = require('./controllers/conditions');
 
 const app = express();
 
-app.get('/conditions', (req, res) => res.json(conditions));
+app.get('/conditions', (req, res) => {
+  getConditions()
+    .then(conditions => {
+      res.json(conditions);
+    })
+    .catch(err => console.log(err));
+});
 
 app.listen(5000, () => console.log('Listening on 5000'));

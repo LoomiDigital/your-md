@@ -7,7 +7,7 @@ const conditions = data => ({
 });
 
 const fetchConditions = () => dispatch => {
-  axios
+  return axios
     .get('/api/conditions')
     .then(({ data }) => dispatch(conditions(data)))
     .catch(err => console.log(err));

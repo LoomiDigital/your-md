@@ -1,0 +1,10 @@
+{
+  "conditions": [
+    {
+      "label": "A condition",
+      "image": "https://via.placeholder.com/640x360.png?text=placeholder%20image",
+      "snippet": "An unpleasant condition",
+      "url": "This URL really shouldn't render"
+    }
+  ]
+}
