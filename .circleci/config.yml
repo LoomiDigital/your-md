@@ -1,28 +1,40 @@
 version: 2
 jobs:
-  deploy:
-    working_directory: ~/app
+  build:
     docker:
-      - image: circleci/node:10.15.1
+      - image: circleci/node@1.1.6
+
+    working_directory: /go/src/github.com/mlabouardy/docker-eb-ci-mon
+
     steps:
       - checkout
-      - run:
-          name: Install python, pip, and the AWS EB CLI
-          command: |
-            sudo apt update
-            sudo apt install -y python-pip python-dev
-            sudo pip install awsebcli
-      - run:
-          name: Deploying
-          command: eb deploy YourMd-env
 
-workflows:
-  version: 2
-  build:
-    jobs:
-      - deploy:
-          filters:
-            branches:
-              only:
-                - staging
-                - master
+      - setup_remote_docker
+
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y awscli
+
+      - run:
+          name: Build
+          command: docker build -t barabis/your-MD-client:latest .
+
+      - run:
+          name: Push
+          command: |
+            docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
+            docker tag barabis/your-MD-client:latest barabis/your-MD-client:${CIRCLE_SHA1}
+            docker push barabis/your-MD-client:latest
+            docker push barabis/your-MD-client:${CIRCLE_SHA1}
+
+      - run:
+          name: Deploy
+          command: |
+            zip -r deployment-${CIRCLE_SHA1}.zip .
+            aws s3 cp deployment-${CIRCLE_SHA1}.zip s3://elasticbeanstalk-eu-west-1-487429313413 --region eu-west-1
+            aws elasticbeanstalk create-application-version --application-name YOUR-MD \
+                --version-label ${CIRCLE_SHA1} --source-bundle S3Bucket="elasticbeanstalk-eu-west-1-487429313413",S3Key="deployment-${CIRCLE_SHA1}.zip" --region eu-west-1
+            aws elasticbeanstalk update-environment --application-name YOUR-MD \
+                --environment-name staging --version-label ${CIRCLE_SHA1} --region eu-west-1
