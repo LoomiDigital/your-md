@@ -1,0 +1,12 @@
+version: 2.1
+orbs:
+  aws-code-deploy: circleci/aws-code-deploy@x.y
+workflows:
+  deploy_application:
+    jobs:
+      - aws-code-deploy/deploy:
+          application-name: YOUR-MD
+          bundle-bucket: arn:aws:s3:::elasticbeanstalk-us-west-2-487429313413
+          bundle-key: test
+          deployment-group: myDeploymentGroup
+          service-role-arn: arn:aws:iam::487429313413:role/aws-elasticbeanstalk-service-role
