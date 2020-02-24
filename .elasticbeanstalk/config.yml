@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: $CIRCLE_BRANCH-YOUR-MD
+    environment: YOUR-MD
 global:
   application_name: YOUR-MD
   default_ec2_keyname: XXXXXX
