@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: YOUR-MD
+    environment: e-jstyfubzmy
 global:
   application_name: YOUR-MD
   default_ec2_keyname: XXXXXX
