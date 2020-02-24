@@ -17,15 +17,15 @@ jobs:
 
       - run:
           name: Build
-          command: docker build -t barabis/your-MD-client:latest .
+          command: docker build -t barabis/your-md-client:latest .
 
       - run:
           name: Push
           command: |
             docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
-            docker tag barabis/your-MD-client:latest barabis/your-MD-client:${CIRCLE_SHA1}
-            docker push barabis/your-MD-client:latest
-            docker push barabis/your-MD-client:${CIRCLE_SHA1}
+            docker tag barabis/your-md-client:latest barabis/your-md-client:${CIRCLE_SHA1}
+            docker push barabis/your-md-client:latest
+            docker push barabis/your-md-client:${CIRCLE_SHA1}
 
       - run:
           name: Deploy
