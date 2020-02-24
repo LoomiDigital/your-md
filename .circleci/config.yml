@@ -8,14 +8,10 @@ jobs:
       - checkout
 
       - run:
-          name: Installing deployment dependencies
-          working_directory: /
+          name: Install python, pip, and the AWS EB CLI
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-
+            sudo apt-get install python-pip python-dev
+            sudo pip install awsebcli==3.14.11
       - run:
           name: Deploying
           command: eb deploy $CIRCLE_BRANCH-YOUR-MD
