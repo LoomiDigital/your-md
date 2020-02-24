@@ -3,10 +3,9 @@ jobs:
   deploy:
     working_directory: ~/app
     docker:
-      - image: circleci/ruby:2.4.3
+      - image: circleci/node:10.15.1
     steps:
       - checkout
-
       - run:
           name: Install python, pip, and the AWS EB CLI
           command: |
