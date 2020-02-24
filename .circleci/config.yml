@@ -14,7 +14,7 @@ jobs:
             sudo pip install awsebcli
       - run:
           name: Deploying
-          command: eb deploy e-jstyfubzmy
+          command: eb deploy YourMd-env
 
 workflows:
   version: 2
