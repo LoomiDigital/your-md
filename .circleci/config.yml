@@ -17,7 +17,7 @@ jobs:
 
       - run:
           name: Build
-          command: docker build -t barabis/your-md-client:latest .
+          command: docker build -t barabis/your-md-client:latest ./client
 
       - run:
           name: Push
