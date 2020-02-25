@@ -14,7 +14,7 @@ function App() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Medical Conditions
+            Your MD: Medical Conditions
           </Typography>
         </Toolbar>
       </AppBar>
