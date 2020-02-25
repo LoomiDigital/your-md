@@ -3,21 +3,21 @@
   "containerDefinitions": [
     {
       "name": "client",
-      "image": "barabis/yourMD-client",
+      "image": "barabis/your-md-client",
       "hostname": "client",
       "essential": false,
       "memory": 128
     },
     {
       "name": "server",
-      "image": "barabis/yourMD-server",
+      "image": "barabis/your-md-server",
       "hostname": "api",
       "essential": false,
       "memory": 128
     },
     {
       "name": "nginx",
-      "image": "barabis/yourMD-nginx",
+      "image": "barabis/your-md-nginx",
       "hostname": "nginx",
       "essential": true,
       "memory": 128,

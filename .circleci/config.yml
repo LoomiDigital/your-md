@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10.16.3
+      - image: circleci/node:latest
 
     steps:
       - checkout
@@ -20,12 +20,26 @@ jobs:
           command: docker build -t barabis/your-md-client:latest ./client
 
       - run:
+          name: Build
+          command: docker build -t barabis/your-md-server:latest ./server
+
+      - run:
+          name: Build
+          command: docker build -t barabis/your-md-nginx:latest ./nginx
+
+      - run:
           name: Push
           command: |
             docker login -u$DOCKERHUB_LOGIN -p$DOCKERHUB_PASSWORD
             docker tag barabis/your-md-client:latest barabis/your-md-client:${CIRCLE_SHA1}
             docker push barabis/your-md-client:latest
             docker push barabis/your-md-client:${CIRCLE_SHA1}
+            docker tag barabis/your-md-server:latest barabis/your-md-server:${CIRCLE_SHA1}
+            docker push barabis/your-md-server:latest
+            docker push barabis/your-md-server:${CIRCLE_SHA1}
+            docker tag barabis/your-md-nginx:latest barabis/your-md-nginx:${CIRCLE_SHA1}
+            docker push barabis/your-md-nginx:latest
+            docker push barabis/your-md-nginx:${CIRCLE_SHA1}
 
       - run:
           name: Deploy
@@ -35,4 +49,4 @@ jobs:
             aws elasticbeanstalk create-application-version --application-name YOUR-MD \
                 --version-label ${CIRCLE_SHA1} --source-bundle S3Bucket="elasticbeanstalk-eu-west-1-487429313413",S3Key="deployment-${CIRCLE_SHA1}.zip" --region eu-west-1
             aws elasticbeanstalk update-environment --application-name YOUR-MD \
-                --environment-name staging --version-label ${CIRCLE_SHA1} --region eu-west-1
+                --environment-name YourMd-env --version-label ${CIRCLE_SHA1} --region eu-west-1
